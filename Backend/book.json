@@ -1,0 +1,22 @@
+[{
+    "name":"Don't Believe Everything You Think (English)",
+    "price":299,
+    "category":"Psychology",
+    "image":"https://m.media-amazon.com/images/I/715qi-cIbML._SY425_.jpg",
+    "title":"Don't Believe Everything You Think (English)"
+},
+{
+    "name":"Atomic Habits (English)",
+    "price":499,
+    "category":"Self Help",
+    "image":"https://m.media-amazon.com/images/I/419aJfhczCL._SY445_SX342_FMwebp_.jpg",
+    "title":"Atomic Habits (English)"
+},
+{
+    "name":"The Psychology of Money (English)",
+    "price":399,
+    "category":"Finance",
+    "image":"https://m.media-amazon.com/images/I/41mxvU9Tu6L._SY445_SX342_FMwebp_.jpg",
+    "title":"The Psychology of Money (English)"
+}
+]

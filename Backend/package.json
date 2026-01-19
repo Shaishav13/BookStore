@@ -1,0 +1,40 @@
+{
+  "name": "ub-books-backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+  "test": "set NODE_ENV=test&& set NODE_OPTIONS=--experimental-vm-modules&& jest",
+  "seed": "node seedBooks.js"
+},
+  "author": "Shaishav",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongodb": "^6.8.0",
+    "mongoose": "^8.3.3",
+    "nodemailer": "^6.9.13",
+    "nodemon": "^3.1.0",
+    "pdfkit": "^0.15.0",
+    "stripe": "^16.5.0"
+  },
+  "description": "UB Books - Backend API server for online bookstore",
+  "devDependencies": {
+    "jest": "^30.2.0",
+    "mongodb-memory-server": "^10.4.0",
+    "supertest": "^7.1.4"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "setupFilesAfterEnv": [
+      "./tests/setup.js"
+    ],
+    "forceExit": true,
+    "detectOpenHandles": true,
+    "transform": {}
+  }
+}

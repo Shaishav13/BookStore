@@ -1,0 +1,9 @@
+{
+  "name": "ub-books",
+  "version": "1.0.0",
+  "description": "UB Books - Online Bookstore Application",
+  "author": "Shaishav",
+  "dependencies": {
+    "mongodb": "^7.0.0"
+  }
+}
