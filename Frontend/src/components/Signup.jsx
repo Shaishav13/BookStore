@@ -226,9 +226,10 @@ function Signup() {
                                     >
                                         Sign in to your account
                                     </button>
-                                    <Login />
                                 </div>
                             </form>
+                            {/* Login modal must be outside the form to avoid nested <form> DOM warning */}
+                            <Login />
                         </div>
                     </div>
 
