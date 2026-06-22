@@ -8,8 +8,8 @@ function CartProvider({children}) {
     const [cartCount,setCartCount]=useState(0);
     const user = JSON.parse(localStorage.getItem("Users"))
     useEffect(()=>{
-        const fetchCart = async () => {
-            if (user) {
+    const fetchCart = async () => {
+            if (user && user.role !== 'admin') {
               await axios.get(`http://localhost:4001/cart/${user._id}`)
                 .then(res => {
                 setCartCount(res.data.items.length)

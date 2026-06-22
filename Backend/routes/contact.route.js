@@ -23,14 +23,14 @@ router.post("/", async (req, res) => {
     });
 
     await transporter.sendMail({
-      from: `"UB Books Support" <${process.env.SMTP_MAIL}>`, 
+      from: `"UB-Books Support" <${process.env.SMTP_MAIL}>`, 
       to: process.env.CONTACT_EMAIL || "support@ubbooks.com", 
       replyTo: email, 
-      subject: `New message from ${name} - UB Books Contact Form`,
+      subject: `New message from ${name} - UB-Books Contact Form`,
       text: message,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
-          <h2 style="color: #333; text-align: center; border-bottom: 2px solid #007bff; padding-bottom: 10px;">New Contact Form Message - UB Books</h2>
+          <h2 style="color: #333; text-align: center; border-bottom: 2px solid #007bff; padding-bottom: 10px;">New Contact Form Message - UB-Books</h2>
           <div style="margin: 20px 0;">
             <p style="margin: 10px 0;"><strong style="color: #007bff;">Name:</strong> ${name}</p>
             <p style="margin: 10px 0;"><strong style="color: #007bff;">Email:</strong> ${email}</p>
@@ -41,7 +41,7 @@ router.post("/", async (req, res) => {
           </div>
           <hr style="margin: 20px 0; border: none; border-top: 1px solid #eee;">
           <p style="text-align: center; color: #666; font-size: 12px;">
-            This message was sent from the UB Books contact form.<br>
+            This message was sent from the UB-Books contact form.<br>
             Please reply directly to the customer's email: ${email}
           </p>
         </div>

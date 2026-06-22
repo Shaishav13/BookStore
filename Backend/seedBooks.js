@@ -53,7 +53,7 @@ const books = [
         name: "Think and Grow Rich",
         price: 249,
         category: "Self Help",
-        image: "https://m.media-amazon.com/images/I/81l3rZK4lnL._SY425_.jpg",
+        image: "https://m.media-amazon.com/images/I/61IxJuRI39L._SY522_.jpg",
         title: "Think and Grow Rich by Napoleon Hill"
     }
 ];

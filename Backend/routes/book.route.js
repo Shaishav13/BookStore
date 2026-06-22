@@ -1,8 +1,11 @@
 import express from 'express'
-import { getBook, createBook, createMultipleBooks } from '../controller/book.controller.js';
-const router=express.Router();
+import { getBook, getBookById, createBook, createMultipleBooks, getRelatedBooks, getCategories } from '../controller/book.controller.js';
+const router = express.Router();
 
-router.get("/",getBook);
+router.get("/categories", getCategories);
+router.get("/", getBook);
+router.get("/:id", getBookById);
+router.get("/:bookId/related", getRelatedBooks);
 router.post("/", createBook);
 router.post("/bulk", createMultipleBooks);
 

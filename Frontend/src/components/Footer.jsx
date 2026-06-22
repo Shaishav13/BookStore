@@ -31,13 +31,14 @@ function Footer() {
             </a>
 
             {/* LinkedIn */}
-            <a href="https://www.linkedin.com/in/shaishav-967318252/" target="_blank" rel="noopener noreferrer">
+            <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer">
               <FaLinkedin size={24} />
             </a>
           </div>
         </nav>
         <aside>
-          <p>Copyright © 2026 - All right reserved by Udta Birdie Ltd</p>
+          <p>Just one more page... because reality can wait.</p><br />
+          <p>UB-Books</p>
         </aside>
       </footer>
     </>

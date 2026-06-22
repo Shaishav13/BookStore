@@ -1,0 +1,11 @@
+{
+  "watch": ["."],
+  "ext": "js,json",
+  "ignore": [
+    "node_modules/",
+    "tests/",
+    "*.test.js",
+    "seed*.js"
+  ],
+  "exec": "node server.js"
+}

@@ -20,7 +20,7 @@ function About() {
           {/* Heading */}
           <header className="text-center space-y-3">
             <h1 className="text-4xl md:text-5xl font-bold text-pink-500">
-              About UB Books
+              About UB-Books
             </h1>
             <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300">
               We&apos;re delighted to have you here, <span className="font-semibold text-black dark:text-white">{displayName}</span>!
@@ -33,7 +33,7 @@ function About() {
               Who We Are
             </h2>
             <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-              Welcome to <span className="font-semibold text-black dark:text-white">UB Books</span> — your friendly online bookstore.
+              Welcome to <span className="font-semibold text-black dark:text-white">UB-Books</span> — your friendly online bookstore.
               We curate the best books across genres and deliver them straight to your doorstep.
               Our mission? Simple: make reading accessible, affordable, and absolutely delightful.
             </p>
@@ -69,7 +69,7 @@ function About() {
           {/* Bottom Line */}
           <div className="text-center text-gray-500 dark:text-gray-400 pt-4">
             <p className="text-sm">
-              Thank you for choosing <span className="font-semibold text-black dark:text-white">UB Books</span>.
+              Thank you for choosing <span className="font-semibold text-black dark:text-white">UB-Books</span>.
               Happy reading! 📚
             </p>
           </div>

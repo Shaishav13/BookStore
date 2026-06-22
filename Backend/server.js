@@ -6,6 +6,9 @@ import userRoute from './routes/user.route.js'
 import contactRoute from './routes/contact.route.js'
 import cartRoute from './routes/cart.route.js'
 import orderRoute from './routes/order.route.js'
+import ebookRoute from './routes/ebook.route.js'
+import adminRoute from './routes/admin.route.js'
+import reviewRoute from './routes/review.route.js'
 import cors from 'cors'
 const app = express()
 
@@ -85,7 +88,10 @@ app.use("/book",bookRoute);
 app.use("/user",userRoute);
 app.use("/contact",contactRoute);
 app.use("/cart",cartRoute);
-app.use("/order",orderRoute)
+app.use("/order",orderRoute);
+app.use("/ebook",ebookRoute);
+app.use("/admin",adminRoute);
+app.use("/review",reviewRoute);
 
 app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`)

@@ -1,13 +1,16 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from "react-hook-form"
 import axios from 'axios'
 import toast from 'react-hot-toast';
 import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
+import { useAuth } from '../context/AuthProvider';
 
 function Login() {
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
+    const [, setAuthUser] = useAuth();
     
     const {
         register,
@@ -26,12 +29,17 @@ function Login() {
                 console.log("User Info", res.data.user);
                 if (res.data) {
                     toast.success('Logged in Successfully!!');
-                    document.getElementById('my_modal_3').close()
+                    localStorage.setItem("Users", JSON.stringify(res.data.user));
+                    setAuthUser(res.data.user); // Update React state so guards see the user immediately
+                    document.getElementById('my_modal_3').close();
 
                     setTimeout(() => {
-                        window.location.reload()
-                        localStorage.setItem("Users", JSON.stringify(res.data.user))
-                    }, 1000)
+                        if (res.data.user.role === 'admin') {
+                            navigate('/admin/dashboard');
+                        } else {
+                            window.location.reload();
+                        }
+                    }, 300);
                 }
             }).catch((err) => {
                 if (err.response) {
@@ -62,7 +70,7 @@ function Login() {
                             </button>
                             <div className="flex items-center justify-center mb-2">
                                 <img src="/book.png" alt="Logo" className="h-12 w-12 mr-3" />
-                                <h2 className="text-3xl font-bold text-white">UB Books</h2>
+                                <h2 className="text-3xl font-bold text-white">UB-Books</h2>
                             </div>
                             <p className="text-center text-blue-100 text-sm">Welcome back! Sign in to continue</p>
                         </div>

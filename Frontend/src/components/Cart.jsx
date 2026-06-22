@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import Navbar from './Navbar';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Footer from './Footer';
 import { useCartContext } from '../context/CartProvider';
 import { FaTrash } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 function Cart() {
   const [cart, setCart] = useState(null);
+  const navigate = useNavigate();
   const [cartIsEmpty, setCartIsEmpty] = useState("false");
   const [totalAmount, setTotalAmount] = useState(0);
   const [deletingItemId, setDeletingItemId] = useState(null);
@@ -67,28 +68,25 @@ function Cart() {
     <>
       <Navbar />
 
-      <div>
-        <div className='pt-28 container mx-auto md:px-2 px-4'>
+      <div className="min-h-screen bg-gray-50 dark:bg-slate-900 dark:text-white">
+        <div className='pt-28 pb-16 max-w-3xl mx-auto px-4'>
 
-          <h1 className='text-pink-500 text-2xl md:text-5xl animate__animated animate__backInDown mb-4'>Shopping Cart</h1>
+          <h1 className='text-pink-500 text-2xl sm:text-3xl md:text-5xl animate__animated animate__backInDown mb-4'>Shopping Cart</h1>
 
-          <div className='flex flex-col md:flex-row md:items-center gap-4 mb-6'>
-            <h1 className='text-green-500 md:text-2xl'>Total Cart Value ₹{totalAmount}</h1>
+          <div className='flex flex-col sm:flex-row sm:items-center gap-3 mb-6'>
+            <h2 className='text-green-500 text-lg sm:text-2xl font-semibold'>Total: ₹{totalAmount}</h2>
             
             {cartIsEmpty || (cart && cart.items.length === 0) ? (
               <button 
-                className='bg-gray-400 rounded-full px-4 py-2 text-white cursor-not-allowed hover:bg-gray-500 transition-colors duration-200'
+                className='w-full sm:w-auto bg-gray-400 rounded-full px-5 py-2 text-white cursor-not-allowed'
                 disabled
-                onClick={(e) => {
-                  e.preventDefault();
-                  toast.error("Your cart is empty! Add some books before checkout.");
-                }}
+                onClick={(e) => { e.preventDefault(); toast.error("Your cart is empty! Add some books before checkout."); }}
               >
                 Checkout
               </button>
             ) : (
               <Link 
-                className='bg-pink-500 rounded-full px-4 py-2 text-white hover:bg-red-600 transition-colors duration-200' 
+                className='w-full sm:w-auto text-center bg-pink-500 rounded-full px-5 py-2 text-white hover:bg-red-600 transition-colors duration-200' 
                 to='/payment'
               >
                 Checkout
@@ -138,15 +136,27 @@ function Cart() {
                      ${deletingItemId === item._id ? 'animate__animated animate__fadeOut' : ''}`}
                 >
                   <div className='flex flex-col sm:flex-row'>
-                    <div className="w-full sm:w-40 h-40 flex-shrink-0">
-                      <img src={item.bookId.image} className="w-full h-full object-cover p-2 rounded-md" alt={item.bookId.name} />
+                    <div
+                      className="w-full sm:w-40 h-40 flex-shrink-0 cursor-pointer"
+                      onClick={() => navigate(`/book/${item.bookId._id}`)}
+                    >
+                      <img src={item.bookId.image} className="w-full h-full object-cover p-2 rounded-md hover:opacity-80 transition-opacity" alt={item.bookId.name} />
                     </div>
                     <div className='flex-grow p-4'>
                       <div className='flex flex-col sm:flex-row justify-between items-start sm:items-center'>
                         <div className='mb-4 sm:mb-0'>
-                          <h3 className='font-semibold text-lg'>{item.bookId.name}</h3>
+                          <h3
+                            className='font-semibold text-lg cursor-pointer hover:text-pink-500 transition-colors'
+                            onClick={() => navigate(`/book/${item.bookId._id}`)}
+                          >
+                            {item.bookId.name}
+                          </h3>
                           <p className='text-gray-600 dark:text-gray-400'>{item.bookId.title}</p>
-                          <p className='text-green-600 dark:text-green-400 font-bold text-lg'>₹{item.bookId.price}</p>
+                          {item.bookId.inStock === false ? (
+                            <p className='text-red-500 font-bold text-lg'>Out of Stock</p>
+                          ) : (
+                            <p className='text-green-600 dark:text-green-400 font-bold text-lg'>₹{item.bookId.price}</p>
+                          )}
                         </div>
                         <div className='flex items-center gap-4'>
                           <div className='flex flex-col items-center'>
@@ -184,9 +194,7 @@ function Cart() {
         </div>
 
       </div>
-      <div className='flex flex-col h-screen justify-end'>
-        <Footer />
-      </div>
+      <Footer />
 
     </>
   )

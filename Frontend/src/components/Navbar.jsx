@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Login from "./Login";
 import { useAuth } from "../context/AuthProvider";
-import Logout from "./Logout";
 import { useCartContext } from "../context/CartProvider";
+import { FaHeart } from "react-icons/fa";
 
 function Navbar() {
   const [authUser, setAuthUser] = useAuth();
@@ -47,8 +47,9 @@ function Navbar() {
   const navItems = (
     <>
       <li><Link to="/">Home</Link></li>
-      <li><Link to="/course">Course</Link></li>
+      <li><Link to="/course">Store</Link></li>
       <li><Link to="/myorders">MyOrders</Link></li>
+      {authUser && <li><Link to="/wishlist" className="flex items-center gap-1"><FaHeart className="text-pink-500" size={12} /> Wishlist</Link></li>}
       <li><Link to="/contact">Contact</Link></li>
       <li><Link to="/about">About</Link></li>
     </>
@@ -88,54 +89,17 @@ function Navbar() {
             </button>
           </div>
 
-              {/* -------- Left: Text + Logo -------- */}
-              <div className="flex items-center gap-2 transition-all duration-500 ease-in-out">
-
-            {/* LOGO */}
-            <img
-              src="/book.png"
-              alt="UB Books Logo"
-              className={`
-                h-8 w-8 transition-all duration-500 ease-in-out
-                ${
-                  sticky
-                    ? "scale-110"
-                    : "scale-100"
-                }
-              `}
-            />
-
-            {/* TEXT - Full title when not sticky, abbreviated when sticky */}
-            <div className="relative h-8 flex items-center overflow-hidden">
-              {/* Full title "UB Books" */}
-              <h2
-                className={`
-                  text-2xl font-bold transition-all duration-500 ease-in-out absolute whitespace-nowrap
-                  ${
-                    sticky
-                      ? "opacity-0 translate-x-8 scale-90"
-                      : "opacity-100 translate-x-0 scale-100"
-                  }
-                `}
-              >
-                UB Books
-              </h2>
-              
-              {/* Abbreviated title "UB" */}
-              <h2
-                className={`
-                  text-2xl font-bold transition-all duration-500 ease-in-out whitespace-nowrap
-                  ${
-                    sticky
-                      ? "opacity-100 translate-x-0 scale-100"
-                      : "opacity-0 -translate-x-8 scale-90"
-                  }
-                `}
-              >
-                UB
-              </h2>
-            </div>
-          </div>
+              {/* -------- Left: Logo + Title -------- */}
+              <div className="flex items-center gap-2">
+                <img
+                  src="/book.png"
+                  alt="UB-Books Logo"
+                  className="h-8 w-8 flex-shrink-0"
+                />
+                <h2 className="hidden sm:block text-lg md:text-2xl font-bold whitespace-nowrap">
+                  UB-Books
+                </h2>
+              </div>
 
           {/* -------- Center Menu (Desktop) -------- */}
           <div className="hidden lg:flex">
@@ -145,10 +109,10 @@ function Navbar() {
           </div>
 
           {/* -------- Right Section -------- */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1 sm:gap-3">
 
-           {/* Search */}
-<div className="hidden sm:block w-52">
+           {/* Search — hidden on xs, visible from sm */}
+<div className="hidden sm:block w-40 md:w-52">
   <div className="relative">
     <span className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
       <svg
@@ -157,7 +121,7 @@ function Navbar() {
         viewBox="0 0 24 24"
         strokeWidth="2"
         stroke="currentColor"
-        className="w-5 h-5 text-gray-400 dark:text-gray-300"
+        className="w-4 h-4 text-gray-400 dark:text-gray-300"
       >
         <path
           strokeLinecap="round"
@@ -166,11 +130,10 @@ function Navbar() {
         />
       </svg>
     </span>
-
     <input
       type="text"
       placeholder="Search..."
-      className="w-full pl-10 pr-4 py-2 rounded-full text-sm bg-gray-100 dark:bg-slate-800
+      className="w-full pl-9 pr-3 py-1.5 rounded-full text-sm bg-gray-100 dark:bg-slate-800
                  border border-gray-300 dark:border-slate-700
                  text-gray-700 dark:text-gray-200
                  placeholder-gray-400 dark:placeholder-gray-500
@@ -259,9 +222,97 @@ function Navbar() {
 )}
 
 
-            {/* Login / Logout */}
+            {/* Profile Dropdown / Login */}
             {authUser ? (
-              <Logout />
+              <div className="relative group">
+                {/* Avatar trigger */}
+                <button className="w-9 h-9 rounded-full bg-pink-500 hover:bg-pink-600 text-white font-bold text-sm flex items-center justify-center shadow-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-pink-400">
+                  {(authUser.name || authUser.email || "U")
+                    .split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)}
+                </button>
+
+                {/* Dropdown */}
+                <div className="absolute right-0 top-full mt-2 w-52 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl shadow-xl z-50
+                  opacity-0 invisible group-hover:opacity-100 group-hover:visible
+                  translate-y-1 group-hover:translate-y-0 transition-all duration-200
+                  max-w-[calc(100vw-1rem)]">
+
+                  {/* User info */}
+                  <div className="px-4 py-3 border-b border-gray-100 dark:border-slate-700">
+                    <p className="text-sm font-semibold text-gray-800 dark:text-white truncate">{authUser.name}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{authUser.email}</p>
+                  </div>
+
+                  {/* Menu items */}
+                  <div className="py-1">
+                    {authUser.role === 'admin' && (
+                      <Link
+                        to="/admin/dashboard"
+                        className="flex items-center gap-3 px-4 py-2.5 text-sm font-semibold text-pink-600 dark:text-pink-400 hover:bg-pink-50 dark:hover:bg-slate-700 transition-colors"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-pink-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2" />
+                        </svg>
+                        Admin Panel
+                      </Link>
+                    )}
+                    <Link
+                      to="/profile"
+                      className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-pink-50 dark:hover:bg-slate-700 transition-colors"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-pink-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                      </svg>
+                      My Profile
+                    </Link>
+
+                    <Link
+                      to="/profile?tab=password"
+                      className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-pink-50 dark:hover:bg-slate-700 transition-colors"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-pink-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                      </svg>
+                      Change Password
+                    </Link>
+
+                    <Link
+                      to="/myorders"
+                      className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-pink-50 dark:hover:bg-slate-700 transition-colors"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-pink-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                      </svg>
+                      My Orders
+                    </Link>
+                    <Link
+                      to="/wishlist"
+                      className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-pink-50 dark:hover:bg-slate-700 transition-colors"
+                    >
+                      <FaHeart className="w-4 h-4 text-pink-500" />
+                      My Wishlist
+                    </Link>
+                  </div>
+
+                  {/* Logout */}
+                  <div className="border-t border-gray-100 dark:border-slate-700 py-1">
+                    <button
+                      onClick={() => {
+                        localStorage.removeItem("Users");
+                        setAuthUser(undefined);
+                        navigate("/");
+                        window.location.reload();
+                      }}
+                      className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-slate-700 transition-colors"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                      </svg>
+                      Logout
+                    </button>
+                  </div>
+                </div>
+              </div>
             ) : (
               <div>
                 <Link
@@ -296,8 +347,8 @@ function Navbar() {
             {/* Sidebar header */}
             <li className="mb-4">
               <div className="flex items-center gap-2">
-                <img src="/book.png" alt="UB Books Logo" className="h-8 w-8" />
-                <h2 className="text-2xl font-bold">UB Books</h2>
+                <img src="/book.png" alt="UB-Books Logo" className="h-8 w-8" />
+                <h2 className="text-2xl font-bold">UB-Books</h2>
               </div>
             </li>
             
@@ -309,7 +360,7 @@ function Navbar() {
             </li>
             <li className="mb-2">
               <Link to="/course" onClick={() => setSidebarOpen(false)} className="text-lg">
-                Course
+                Store
               </Link>
             </li>
             <li className="mb-2">
@@ -368,9 +419,29 @@ function Navbar() {
             {/* Login/Logout in sidebar */}
             <li>
               {authUser ? (
-                <div onClick={() => setSidebarOpen(false)}>
-                  <Logout />
-                </div>
+                <>
+                  {authUser.role === 'admin' && (
+                    <Link
+                      to="/admin/dashboard"
+                      onClick={() => setSidebarOpen(false)}
+                      className="flex items-center gap-2 text-lg font-semibold text-pink-500 mb-2"
+                    >
+                      🛠 Admin Panel
+                    </Link>
+                  )}
+                  <button
+                    onClick={() => {
+                    localStorage.removeItem("Users");
+                    setAuthUser(undefined);
+                    setSidebarOpen(false);
+                    navigate("/");
+                    window.location.reload();
+                  }}
+                  className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 duration-300 w-full text-left"
+                >
+                  Logout
+                </button>
+                </>
               ) : (
                 <button
                   onClick={() => {

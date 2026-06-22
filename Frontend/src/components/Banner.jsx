@@ -7,18 +7,18 @@ const Banner = () => {
 
   return (
     <section className="bg-gray-50 dark:bg-slate-900 dark:text-white transition-all duration-300 pt-28 pb-16">
-      <div className="max-w-6xl mx-auto px-6 md:px-12 flex flex-col md:flex-row items-center gap-10">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-12 flex flex-col md:flex-row items-center gap-10">
 
         {/* Left Content */}
         <div className="flex-1 space-y-6 text-center md:text-left">
 
-          <h1 className="text-4xl md:text-5xl font-bold leading-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight">
             Discover Your Next 
             <span className="text-pink-500"> Favorite Book</span>
           </h1>
 
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-xl mx-auto md:mx-0 leading-relaxed">
-            Welcome to UB Books — your gateway to knowledge and imagination.
+          <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 max-w-xl mx-auto md:mx-0 leading-relaxed">
+            Welcome to UB-Books — Discover, shop, and read — all in one place.
             Explore curated collections, academic essentials, and inspiring classics.
           </p>
 
@@ -43,12 +43,12 @@ const Banner = () => {
 
         </div>
 
-        {/* Right Image */}
+        {/* Right Image — hidden on small phones, visible from sm up */}
         <div className="flex-1 flex justify-center md:justify-end">
           <img
             src={banner}
             alt="Books banner"
-            className="w-[360px] md:w-[500px] lg:w-[550px] drop-shadow-lg select-none"
+            className="w-[260px] sm:w-[320px] md:w-[460px] lg:w-[520px] drop-shadow-lg select-none"
           />
         </div>
 

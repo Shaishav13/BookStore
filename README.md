@@ -1,11 +1,11 @@
-# UB Books - Online Bookstore
+# UB-Books - Online Bookstore
 
 [![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
 [![Node.js](https://img.shields.io/badge/Node.js-16+-green.svg)](https://nodejs.org/)
 [![React](https://img.shields.io/badge/React-18-blue.svg)](https://reactjs.org/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-green.svg)](https://www.mongodb.com/)
 
-UB Books is a full-stack MERN (MongoDB, Express.js, React, Node.js) application that provides a complete online bookstore experience. Users can browse books, manage their cart, place orders, and enjoy a seamless shopping experience.
+UB-Books is a full-stack MERN (MongoDB, Express.js, React, Node.js) application that provides a complete online bookstore experience. Users can browse books, manage their cart, place orders, and enjoy a seamless shopping experience.
 
 ## 📸 Screenshots
 
@@ -291,6 +291,6 @@ This project is licensed under the ISC License.
 
 ---
 
-**UB Books** - Your gateway to knowledge and imagination. 📚
+**UB-Books** - Your gateway to knowledge and imagination. 📚
 
 *Developed by Shaishav*

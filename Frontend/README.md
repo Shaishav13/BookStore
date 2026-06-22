@@ -1,6 +1,6 @@
-# UB Books - Frontend
+# UB-Books - Frontend
 
-UB Books is a modern online bookstore application built with React and Vite. This is the frontend component that provides a beautiful, responsive user interface for browsing and purchasing books.
+UB-Books is a modern online bookstore application built with React and Vite. Discover, shop, and read — all in one place.
 
 ## Features
 

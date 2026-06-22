@@ -30,7 +30,7 @@ function Signup() {
             .then((res) => {
                 console.log("User Info", res.data);
                 if (res.data) {
-                    toast.success("Signup successful! Welcome to UB Books");
+                    toast.success("Signup successful! Welcome to UB-Books");
                     setTimeout(() => {
                         navigate(from, { replace: true })
                         window.location.reload()
@@ -67,7 +67,7 @@ function Signup() {
                         <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 px-8 py-6">
                             <div className="flex items-center justify-center mb-2">
                                 <img src="/book.png" alt="Logo" className="h-12 w-12 mr-3" />
-                                <h2 className="text-3xl font-bold text-white">UB Books</h2>
+                                <h2 className="text-3xl font-bold text-white">UB-Books</h2>
                             </div>
                             <p className="text-center text-blue-100 text-sm">Create your account and start exploring books</p>
                         </div>

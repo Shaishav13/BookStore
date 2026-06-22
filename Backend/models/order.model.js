@@ -24,6 +24,7 @@ const orderSchema=mongoose.Schema({
         zip: { type: String, required: true },
         country: { type: String, required: true }
     },
+    paymentMethod: { type: String, enum: ['card', 'upi'], default: 'card' },
     status: { type: String, default: 'Pending' },
     createdAt: { type: Date, default: Date.now }
 })
