@@ -14,9 +14,18 @@ const app = express()
 
 dotenv.config()
 
-// Allow all origins in production for now — tighten after confirming deployment works
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:5174',
+  'https://ub-bookstore.vercel.app',
+  process.env.FRONTEND_URL,
+].filter(Boolean);
+
 app.use(cors({
-  origin: true,
+  origin: (origin, cb) => {
+    if (!origin || allowedOrigins.includes(origin)) return cb(null, true);
+    cb(new Error('CORS: origin not allowed'));
+  },
   credentials: true,
 }));
 app.use(express.json())
