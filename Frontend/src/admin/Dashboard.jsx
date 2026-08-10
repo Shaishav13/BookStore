@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import API_URL from "../config/api";
 import {
   MdPeople, MdMenuBook, MdShoppingCart, MdAttachMoney,
   MdImportContacts, MdDownload,
@@ -54,8 +55,8 @@ export default function Dashboard() {
     const fetchAll = async () => {
       try {
         const [statsRes, revenueRes] = await Promise.all([
-          axios.get("http://localhost:4001/admin/stats", { headers }),
-          axios.get("http://localhost:4001/admin/revenue/monthly", { headers }),
+          axios.get(`${API_URL}/admin/stats`, { headers }),
+          axios.get(`${API_URL}/admin/revenue/monthly`, { headers }),
         ]);
         setStats(statsRes.data);
         setRevenueData(revenueRes.data.data || []);

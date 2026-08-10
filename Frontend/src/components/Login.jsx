@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from "react-hook-form"
 import axios from 'axios'
+import API_URL from '../config/api';
 import toast from 'react-hot-toast';
 import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useAuth } from '../context/AuthProvider';
@@ -24,7 +25,7 @@ function Login() {
             email: data.email,
             password: data.password
         }
-        await axios.post("http://localhost:4001/user/login", user)
+        await axios.post(`${API_URL}/user/login`, user)
             .then((res) => {
                 console.log("User Info", res.data.user);
                 if (res.data) {

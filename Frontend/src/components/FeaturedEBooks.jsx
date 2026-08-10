@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import API_URL from '../config/api';
 import { useNavigate } from 'react-router-dom';
 
 function FeaturedEBooks() {
@@ -8,7 +9,7 @@ function FeaturedEBooks() {
 
   useEffect(() => {
     // Fetch featured ebooks and take the first 6
-    axios.get('http://localhost:4001/ebook?featured=true')
+    axios.get(`${API_URL}/ebook?featured=true`)
       .then(r => setFeatured(r.data.slice(0, 6)))
       .catch(() => {});
   }, []);

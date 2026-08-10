@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import API_URL from "../config/api";
 import { MdDelete, MdEdit, MdAdd, MdSearch, MdClose } from "react-icons/md";
 import { useAuth } from "../context/AuthProvider";
 import toast from "react-hot-toast";
@@ -40,7 +41,7 @@ export default function AdminBooks() {
 
   const fetchBooks = async () => {
     try {
-      const res = await axios.get("http://localhost:4001/admin/books", { headers });
+      const res = await axios.get(`${API_URL}/admin/books`, { headers });
       setBooks(res.data.books);
     } catch {
       toast.error("Failed to load books");
@@ -72,7 +73,7 @@ export default function AdminBooks() {
     setTogglingId(book._id);
     try {
       const res = await axios.patch(
-        `http://localhost:4001/admin/books/${book._id}/stock`,
+        `${API_URL}/admin/books/${book._id}/stock`,
         {},
         { headers }
       );
@@ -101,11 +102,11 @@ export default function AdminBooks() {
     setSaving(true);
     try {
       if (editBook) {
-        const res = await axios.put(`http://localhost:4001/admin/books/${editBook._id}`, { ...form, price: Number(form.price) }, { headers });
+        const res = await axios.put(`${API_URL}/admin/books/${editBook._id}`, { ...form, price: Number(form.price) }, { headers });
         setBooks((prev) => prev.map((b) => (b._id === editBook._id ? res.data.book : b)));
         toast.success("Book updated");
       } else {
-        const res = await axios.post("http://localhost:4001/admin/books", { ...form, price: Number(form.price) }, { headers });
+        const res = await axios.post(`${API_URL}/admin/books`, { ...form, price: Number(form.price) }, { headers });
         setBooks((prev) => [res.data.book, ...prev]);
         toast.success("Book created");
       }
@@ -117,7 +118,7 @@ export default function AdminBooks() {
   const handleDelete = async (bookId) => {
     if (!window.confirm("Delete this book? This cannot be undone.")) return;
     try {
-      await axios.delete(`http://localhost:4001/admin/books/${bookId}`, { headers });
+      await axios.delete(`${API_URL}/admin/books/${bookId}`, { headers });
       toast.success("Book deleted");
       setBooks((prev) => prev.filter((b) => b._id !== bookId));
     } catch { toast.error("Failed to delete book"); }
@@ -127,7 +128,7 @@ export default function AdminBooks() {
     setFeaturingId(book._id);
     try {
       const res = await axios.patch(
-        `http://localhost:4001/admin/books/${book._id}/featured`,
+        `${API_URL}/admin/books/${book._id}/featured`,
         {},
         { headers }
       );
@@ -147,7 +148,7 @@ export default function AdminBooks() {
     const formData = new FormData();
     formData.append('csv', file);
     try {
-      const res = await axios.post('http://localhost:4001/admin/books/bulk-upload', formData, {
+      const res = await axios.post(`${API_URL}/admin/books/bulk-upload`, formData, {
         headers: { ...headers, 'Content-Type': 'multipart/form-data' },
       });
       toast.success(`✅ ${res.data.created} books uploaded!`);

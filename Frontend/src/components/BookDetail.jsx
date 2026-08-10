@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import API_URL from "../config/api";
 import toast from "react-hot-toast";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
@@ -112,21 +113,21 @@ function BookDetail() {
     const fetchBook = async () => {
       setLoading(true);
       try {
-        const res = await axios.get(`http://localhost:4001/book/${id}`);
+        const res = await axios.get(`${API_URL}/book/${id}`);
         setBook(res.data);
         addToRecentlyViewed(res.data);
 
         // Fetch related books using dedicated endpoint
-        const relatedRes = await axios.get(`http://localhost:4001/book/${id}/related`);
+        const relatedRes = await axios.get(`${API_URL}/book/${id}/related`);
         setRelatedBooks(relatedRes.data.slice(0, 4));
 
         // Fetch approved reviews
-        const reviewRes = await axios.get(`http://localhost:4001/review/book/${id}`);
+        const reviewRes = await axios.get(`${API_URL}/review/book/${id}`);
         setReviews(reviewRes.data.reviews || []);
 
         // Check if current user can review
         if (userId) {
-          const canRes = await axios.get(`http://localhost:4001/review/can-review/${userId}/${id}`);
+          const canRes = await axios.get(`${API_URL}/review/can-review/${userId}/${id}`);
           setCanReview(canRes.data.canReview);
           setAlreadyReviewed(canRes.data.alreadyReviewed);
         }
@@ -147,13 +148,13 @@ function BookDetail() {
     }
     setAddingToCart(true);
     try {
-      await axios.post("http://localhost:4001/cart/create", {
+      await axios.post(`${API_URL}/cart/create`, {
         userId,
         bookId: book._id,
         quantity: 1,
       });
       toast.success("Added to cart!");
-      const res = await axios.get(`http://localhost:4001/cart/${userId}`);
+      const res = await axios.get(`${API_URL}/cart/${userId}`);
       setCartCount(res.data.items.length);
     } catch (err) {
       toast.error(err.response?.data?.message || "Failed to add to cart.");
@@ -169,12 +170,12 @@ function BookDetail() {
     }
     // Add to cart first, then go to payment
     try {
-      await axios.post("http://localhost:4001/cart/create", {
+      await axios.post(`${API_URL}/cart/create`, {
         userId,
         bookId: book._id,
         quantity: 1,
       });
-      const res = await axios.get(`http://localhost:4001/cart/${userId}`);
+      const res = await axios.get(`${API_URL}/cart/${userId}`);
       setCartCount(res.data.items.length);
       navigate("/payment");
     } catch (err) {
@@ -188,7 +189,7 @@ function BookDetail() {
     if (!reviewComment.trim()) { toast.error('Please write a comment'); return; }
     setSubmittingReview(true);
     try {
-      await axios.post('http://localhost:4001/review', {
+      await axios.post(`${API_URL}/review`, {
         userId, bookId: id, rating: reviewRating, comment: reviewComment,
       });
       toast.success('Review submitted! Pending admin approval.');

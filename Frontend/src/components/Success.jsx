@@ -14,7 +14,7 @@ const Success = () => {
     
     useEffect(()=>{
         setTimeout(()=>{
-            window.location.href = 'http://localhost:5173/';
+        window.location.href = `${import.meta.env.VITE_APP_URL || 'http://localhost:5173'}/`;
         },7000)
     },[])
 

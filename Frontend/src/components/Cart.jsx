@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
+import API_URL from '../config/api';
 import Navbar from './Navbar';
 import { Link, useNavigate } from 'react-router-dom';
 import Footer from './Footer';
@@ -18,7 +19,7 @@ function Cart() {
   const { cartCount, setCartCount } = useCartContext();
   const fetchCartItems = async () => {
     if (user) {
-      await axios.get(`http://localhost:4001/cart/${user._id}`)
+      await axios.get(`${API_URL}/cart/${user._id}`)
         .then(res => {
           setCartCount(res.data.items.length);
           setCartIsEmpty(false)
@@ -51,7 +52,7 @@ function Cart() {
   const deleteCartItem = async (id) => {
     setDeletingItemId(id);
     setTimeout(async () => {
-      await axios.post("http://localhost:4001/cart/deleteitem", {
+      await axios.post(`${API_URL}/cart/deleteitem`, {
         userId,
         itemId: id,
       }).then(res => {

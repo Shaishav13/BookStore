@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import API_URL from "../config/api";
 import toast from "react-hot-toast";
 import { useAuth } from "../context/AuthProvider";
 import { FiTablet, FiShoppingCart } from "react-icons/fi";
@@ -15,7 +16,7 @@ function EBookCard({ item }) {
   // Check if user already owns this ebook
   useEffect(() => {
     if (!userId || !item._id) return;
-    axios.get(`http://localhost:4001/ebook/owns/${userId}/${item._id}`)
+    axios.get(`${API_URL}/ebook/owns/${userId}/${item._id}`)
       .then(r => setOwned(r.data.owned))
       .catch(() => {});
   }, [userId, item._id]);

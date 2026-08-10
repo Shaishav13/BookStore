@@ -4,6 +4,7 @@ import Footer from './Footer';
 import { useAuth } from '../context/AuthProvider';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import API_URL from '../config/api';
 import toast from 'react-hot-toast';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 
@@ -17,7 +18,7 @@ function Wishlist() {
 
   useEffect(() => {
     if (!userId) { setLoading(false); return; }
-    axios.get(`http://localhost:4001/user/wishlist/${userId}`)
+    axios.get(`${API_URL}/user/wishlist/${userId}`)
       .then(res => setWishlist(res.data.wishlist || []))
       .catch(() => setWishlist([]))
       .finally(() => setLoading(false));
@@ -25,7 +26,7 @@ function Wishlist() {
 
   const removeFromWishlist = async (bookId) => {
     try {
-      await axios.delete(`http://localhost:4001/user/wishlist/${userId}/${bookId}`);
+      await axios.delete(`${API_URL}/user/wishlist/${userId}/${bookId}`);
       setWishlist(prev => prev.filter(b => b._id !== bookId));
       toast.success('Removed from wishlist');
     } catch {

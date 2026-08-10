@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Login from './Login'
 import { useForm } from "react-hook-form"
 import axios from 'axios'
+import API_URL from '../config/api';
 import toast from 'react-hot-toast';
 import { FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
 
@@ -26,7 +27,7 @@ function Signup() {
             email: data.email,
             password: data.password,
         }
-        await axios.post("http://localhost:4001/user/signup", user)
+        await axios.post(`${API_URL}/user/signup`, user)
             .then((res) => {
                 console.log("User Info", res.data);
                 if (res.data) {

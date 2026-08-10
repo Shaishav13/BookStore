@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import API_URL from "../config/api";
 import Slider from "react-slick";
 import Card from "./Card";
 
@@ -12,7 +13,7 @@ function FreeBook() {
   useEffect(() => {
     const getBook = async () => {
       try {
-        const res = await axios.get("http://localhost:4001/book");
+        const res = await axios.get(`${API_URL}/book`);
         setBook(res.data.filter((data) => data.category === "Free"));
       } catch (error) {
         console.error(error);

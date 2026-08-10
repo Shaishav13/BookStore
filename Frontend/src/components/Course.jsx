@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Card from "./Card";
 import EBookCard from "./EBookCard";
 import axios from "axios";
+import API_URL from "../config/api";
 import { Link, useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
@@ -36,14 +37,14 @@ function Course() {
     if (min) params.set("minPrice", min);
     if (max) params.set("maxPrice", max);
     if (q) params.set("search", q);
-    axios.get(`http://localhost:4001/book?${params.toString()}`)
+    axios.get(`${API_URL}/book?${params.toString()}`)
       .then(r => setBooks(r.data))
       .catch(console.error);
   };
 
   // Fetch categories
   useEffect(() => {
-    axios.get("http://localhost:4001/book/categories")
+    axios.get(`${API_URL}/book/categories`)
       .then(r => setCategories(r.data))
       .catch(console.error);
   }, []);
@@ -63,10 +64,10 @@ function Course() {
   useEffect(() => {
     const fetchEbooks = async () => {
       try {
-        const res = await axios.get("http://localhost:4001/ebook");
+        const res = await axios.get(`${API_URL}/ebook`);
         if (res.data.length === 0) {
-          await axios.get("http://localhost:4001/ebook/seed");
-          const seeded = await axios.get("http://localhost:4001/ebook");
+          await axios.get(`${API_URL}/ebook/seed`);
+          const seeded = await axios.get(`${API_URL}/ebook`);
           setEbooks(seeded.data);
         } else {
           setEbooks(res.data);

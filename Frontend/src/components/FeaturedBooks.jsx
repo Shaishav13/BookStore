@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import API_URL from '../config/api';
 import { useNavigate } from 'react-router-dom';
 
 function FeaturedBooks() {
@@ -7,7 +8,7 @@ function FeaturedBooks() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get('http://localhost:4001/book?featured=true')
+    axios.get(`${API_URL}/book?featured=true`)
       .then(r => setFeatured(r.data.slice(0, 6)))
       .catch(() => {});
   }, []);

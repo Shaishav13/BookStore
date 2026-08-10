@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import API_URL from "../config/api";
 import { MdDelete, MdEdit, MdAdd, MdSearch, MdClose, MdPictureAsPdf } from "react-icons/md";
 import { useAuth } from "../context/AuthProvider";
 import toast from "react-hot-toast";
@@ -41,7 +42,7 @@ export default function AdminEBooks() {
 
   const fetchEBooks = async () => {
     try {
-      const res = await axios.get("http://localhost:4001/admin/ebooks", { headers });
+      const res = await axios.get(`${API_URL}/admin/ebooks`, { headers });
       setEbooks(res.data.ebooks);
     } catch {
       toast.error("Failed to load ebooks");
@@ -73,7 +74,7 @@ export default function AdminEBooks() {
     setTogglingId(ebook._id);
     try {
       const res = await axios.patch(
-        `http://localhost:4001/admin/ebooks/${ebook._id}/stock`,
+        `${API_URL}/admin/ebooks/${ebook._id}/stock`,
         {},
         { headers }
       );
@@ -90,7 +91,7 @@ export default function AdminEBooks() {
     setTogglingId(ebook._id + "-feat");
     try {
       const res = await axios.patch(
-        `http://localhost:4001/admin/ebooks/${ebook._id}/featured`,
+        `${API_URL}/admin/ebooks/${ebook._id}/featured`,
         {},
         { headers }
       );
@@ -120,11 +121,11 @@ export default function AdminEBooks() {
     try {
       const payload = { ...form, price: Number(form.price), pages: Number(form.pages) || 0 };
       if (editEBook) {
-        const res = await axios.put(`http://localhost:4001/admin/ebooks/${editEBook._id}`, payload, { headers });
+        const res = await axios.put(`${API_URL}/admin/ebooks/${editEBook._id}`, payload, { headers });
         setEbooks((prev) => prev.map((b) => (b._id === editEBook._id ? res.data.ebook : b)));
         toast.success("EBook updated");
       } else {
-        const res = await axios.post("http://localhost:4001/admin/ebooks", payload, { headers });
+        const res = await axios.post(`${API_URL}/admin/ebooks`, payload, { headers });
         setEbooks((prev) => [res.data.ebook, ...prev]);
         toast.success("EBook created");
       }
@@ -136,7 +137,7 @@ export default function AdminEBooks() {
   const handleDelete = async (ebookId) => {
     if (!window.confirm("Delete this ebook? This cannot be undone.")) return;
     try {
-      await axios.delete(`http://localhost:4001/admin/ebooks/${ebookId}`, { headers });
+      await axios.delete(`${API_URL}/admin/ebooks/${ebookId}`, { headers });
       toast.success("EBook deleted");
       setEbooks((prev) => prev.filter((b) => b._id !== ebookId));
     } catch { toast.error("Failed to delete ebook"); }

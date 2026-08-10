@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import API_URL from "../config/api";
 import { MdSearch, MdClose, MdCreditCard, MdPhoneAndroid, MdLocationOn, MdPerson } from "react-icons/md";
 import { FiPackage } from "react-icons/fi";
 import { useAuth } from "../context/AuthProvider";
@@ -46,7 +47,7 @@ function OrderDetailModal({ order, onClose, onStatusChange }) {
     setSaving(true);
     try {
       await axios.patch(
-        `http://localhost:4001/admin/orders/${order._id}/status`,
+        `${API_URL}/admin/orders/${order._id}/status`,
         { status },
         { headers: { "x-admin-id": authUser?._id } }
       );
@@ -180,7 +181,7 @@ export default function AdminOrders() {
   const headers = { "x-admin-id": authUser?._id };
 
   useEffect(() => {
-    axios.get("http://localhost:4001/admin/orders", { headers })
+    axios.get(`${API_URL}/admin/orders`, { headers })
       .then(res => { setOrders(res.data.orders); setFiltered(res.data.orders); })
       .catch(() => toast.error("Failed to load orders"))
       .finally(() => setLoading(false));
@@ -235,7 +236,7 @@ export default function AdminOrders() {
             onClick={async () => {
               try {
                 const toastId = toast.loading("Exporting orders...");
-                const response = await axios.get("http://localhost:4001/admin/orders/export", {
+                const response = await axios.get(`${API_URL}/admin/orders/export`, {
                   headers,
                   responseType: "blob"
                 });

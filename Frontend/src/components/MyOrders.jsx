@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Navbar from './Navbar'
 import Footer from './Footer'
 import axios from 'axios';
+import API_URL from '../config/api';
 import { useAuth } from '../context/AuthProvider';
 import { useNavigate } from 'react-router-dom';
 import PdfIcon from '../../public/pdficon.svg';
@@ -72,7 +73,7 @@ function MyOrders() {
 
   const fetchOrder = async () => {
     try {
-      const res = await axios.get(`http://localhost:4001/order/view/${userId}`);
+      const res = await axios.get(`${API_URL}/order/view/${userId}`);
       setOrder(res.data);
     } catch (err) {
       if (err.response?.status === 404) setOrder([]);
@@ -82,7 +83,7 @@ function MyOrders() {
 
   const fetchEbookOrders = async () => {
     try {
-      const res = await axios.get(`http://localhost:4001/ebook/user/${userId}`);
+      const res = await axios.get(`${API_URL}/ebook/user/${userId}`);
       setEbookOrders(res.data);
     } catch {
       setEbookOrders([]);
@@ -95,11 +96,11 @@ function MyOrders() {
   }, []);
 
   const viewReceipt = (orderId) => {
-    window.open(`http://localhost:4001/order/receipt/${orderId}`);
+    window.open(`${API_URL}/order/receipt/${orderId}`);
   };
 
   const downloadReceipt = (orderId) => {
-    window.location.href = `http://localhost:4001/order/receipt/${orderId}?download=true`;
+    window.location.href = `${API_URL}/order/receipt/${orderId}?download=true`;
   };
 
   const formatDate = (isoString) => {

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import API_URL from '../config/api';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { useAuth } from '../context/AuthProvider';
@@ -169,7 +170,7 @@ const CheckoutForm = ({ userId, address }) => {
     if (!address?.country) return;
     const createIntent = async () => {
       try {
-        const res = await axios.post('http://localhost:4001/order/payment-intents', { userId, address });
+        const res = await axios.post(`${API_URL}/order/payment-intents`, { userId, address });
         setClientSecret(res.data.clientSecret);
       } catch (err) {
         console.error('Payment intent error:', err);
@@ -202,12 +203,12 @@ const CheckoutForm = ({ userId, address }) => {
     if (error) { setLoading(false); toast.error('Payment failed: ' + error.message); return; }
 
     try {
-      const res = await axios.post('http://localhost:4001/order/create', {
+      const res = await axios.post(`${API_URL}/order/create`, {
         userId, address, paymentIntentId: paymentIntent.id,
       });
       if (res.status === 201) {
         toast.success('Order placed successfully!');
-        setTimeout(() => { window.location.href = `http://localhost:5173/success?orderId=${res.data._id}`; }, 1500);
+        setTimeout(() => { window.location.href = `${import.meta.env.VITE_APP_URL || 'http://localhost:5173'}/success?orderId=${res.data._id}`; }, 1500);
       }
     } catch (err) {
       toast.error('Failed to place order: ' + err.message);
@@ -230,14 +231,14 @@ const CheckoutForm = ({ userId, address }) => {
       toast('📱 Simulating UPI approval...', { icon: '⏳', duration: 2000 });
       await new Promise(r => setTimeout(r, 2000)); // simulate network delay
 
-      const res = await axios.post('http://localhost:4001/order/create-upi', {
+      const res = await axios.post(`${API_URL}/order/create-upi`, {
         userId, address, upiId,
       });
 
       if (res.status === 201) {
         toast.success('Payment successful! Order placed via UPI.');
         setTimeout(() => {
-          window.location.href = `http://localhost:5173/success?orderId=${res.data._id}`;
+          window.location.href = `${import.meta.env.VITE_APP_URL || 'http://localhost:5173'}/success?orderId=${res.data._id}`;
         }, 1500);
       }
     } catch (err) {
@@ -450,7 +451,7 @@ const Payment = () => {
     const fetch = async () => {
       setLoadingAddr(true);
       try {
-        const res = await axios.get(`http://localhost:4001/user/addresses/${userId}`);
+        const res = await axios.get(`${API_URL}/user/addresses/${userId}`);
         setAddresses(res.data.addresses || []);
         const def = res.data.addresses?.find(a => a.isDefault);
         if (def) setSelectedId(def._id);
@@ -470,12 +471,12 @@ const Payment = () => {
     try {
       if (editingAddr?._id) {
         const res = await axios.put(
-          `http://localhost:4001/user/addresses/${userId}/${editingAddr._id}`, form
+          `${API_URL}/user/addresses/${userId}/${editingAddr._id}`, form
         );
         setAddresses(res.data.addresses);
         toast.success("Address updated!");
       } else {
-        const res = await axios.post(`http://localhost:4001/user/addresses/${userId}`, form);
+        const res = await axios.post(`${API_URL}/user/addresses/${userId}`, form);
         setAddresses(res.data.addresses);
         const newAddr = res.data.addresses[res.data.addresses.length - 1];
         setSelectedId(newAddr._id);
@@ -490,7 +491,7 @@ const Payment = () => {
 
   const handleDelete = async (addrId) => {
     try {
-      const res = await axios.delete(`http://localhost:4001/user/addresses/${userId}/${addrId}`);
+      const res = await axios.delete(`${API_URL}/user/addresses/${userId}/${addrId}`);
       setAddresses(res.data.addresses);
       if (selectedId === addrId) {
         const def = res.data.addresses.find(a => a.isDefault);
@@ -504,7 +505,7 @@ const Payment = () => {
 
   const handleSetDefault = async (addrId) => {
     try {
-      const res = await axios.put(`http://localhost:4001/user/addresses/${userId}/${addrId}/default`);
+      const res = await axios.put(`${API_URL}/user/addresses/${userId}/${addrId}/default`);
       setAddresses(res.data.addresses);
       setSelectedId(addrId);
     } catch {

@@ -4,6 +4,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import axios from "axios";
+import API_URL from "../config/api";
 import toast from "react-hot-toast";
 import {
   FiUser, FiMail, FiLock, FiEdit2, FiLogOut,
@@ -139,7 +140,7 @@ function Profile() {
   useEffect(() => {
     if (activeTab !== "orders") return;
     setOrdersLoading(true);
-    axios.get(`http://localhost:4001/order/view/${userId}`)
+    axios.get(`${API_URL}/order/view/${userId}`)
       .then(r => setOrders(r.data))
       .catch(() => setOrders([]))
       .finally(() => setOrdersLoading(false));
@@ -149,7 +150,7 @@ function Profile() {
   useEffect(() => {
     if (activeTab !== "addresses") return;
     setAddrLoading(true);
-    axios.get(`http://localhost:4001/user/addresses/${userId}`)
+    axios.get(`${API_URL}/user/addresses/${userId}`)
       .then(r => setAddresses(r.data.addresses || []))
       .catch(() => setAddresses([]))
       .finally(() => setAddrLoading(false));
@@ -161,7 +162,7 @@ function Profile() {
     if (!profileData.name.trim() || !profileData.email.trim()) { toast.error("Name and email cannot be empty."); return; }
     setProfileLoading(true);
     try {
-      const res = await axios.put(`http://localhost:4001/user/profile/${userId}`, profileData);
+      const res = await axios.put(`${API_URL}/user/profile/${userId}`, profileData);
       const updated = { ...user, name: res.data.user.name, email: res.data.user.email };
       localStorage.setItem("Users", JSON.stringify(updated));
       setAuthUser(updated);
@@ -178,7 +179,7 @@ function Profile() {
     if (passwordData.newPassword.length < 6) { toast.error("Min 6 characters."); return; }
     setPasswordLoading(true);
     try {
-      await axios.put(`http://localhost:4001/user/change-password/${userId}`, {
+      await axios.put(`${API_URL}/user/change-password/${userId}`, {
         currentPassword: passwordData.currentPassword,
         newPassword: passwordData.newPassword,
       });
@@ -192,11 +193,11 @@ function Profile() {
   const handleSaveAddress = async (form) => {
     try {
       if (editingAddr?._id) {
-        const res = await axios.put(`http://localhost:4001/user/addresses/${userId}/${editingAddr._id}`, form);
+        const res = await axios.put(`${API_URL}/user/addresses/${userId}/${editingAddr._id}`, form);
         setAddresses(res.data.addresses);
         toast.success("Address updated!");
       } else {
-        const res = await axios.post(`http://localhost:4001/user/addresses/${userId}`, form);
+        const res = await axios.post(`${API_URL}/user/addresses/${userId}`, form);
         setAddresses(res.data.addresses);
         toast.success("Address added!");
       }
@@ -209,7 +210,7 @@ function Profile() {
 
   const handleDeleteAddress = async (addrId) => {
     try {
-      const res = await axios.delete(`http://localhost:4001/user/addresses/${userId}/${addrId}`);
+      const res = await axios.delete(`${API_URL}/user/addresses/${userId}/${addrId}`);
       setAddresses(res.data.addresses);
       toast.success("Address removed.");
     } catch { toast.error("Failed to delete address."); }
@@ -217,7 +218,7 @@ function Profile() {
 
   const handleSetDefault = async (addrId) => {
     try {
-      const res = await axios.put(`http://localhost:4001/user/addresses/${userId}/${addrId}/default`);
+      const res = await axios.put(`${API_URL}/user/addresses/${userId}/${addrId}/default`);
       setAddresses(res.data.addresses);
       toast.success("Default address updated.");
     } catch { toast.error("Failed to set default."); }

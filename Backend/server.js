@@ -12,9 +12,23 @@ import reviewRoute from './routes/review.route.js'
 import cors from 'cors'
 const app = express()
 
-app.use(cors())
-app.use(express.json())
 dotenv.config()
+
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:5174',
+  process.env.FRONTEND_URL,           // set this to your Vercel URL on Render
+].filter(Boolean);
+
+app.use(cors({
+  origin: (origin, cb) => {
+    // allow requests with no origin (curl, Postman) or from allowed list
+    if (!origin || allowedOrigins.includes(origin)) return cb(null, true);
+    cb(new Error('CORS: origin not allowed'));
+  },
+  credentials: true,
+}));
+app.use(express.json())
 const PORT = process.env.PORT || 4001;
 let URI = process.env.URI || process.env.MONGODB_URI || 'mongodb+srv://nayansaxena456_db_user:1234@cluster0.3pabkob.mongodb.net/myStore';
 

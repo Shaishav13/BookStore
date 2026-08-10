@@ -38,7 +38,7 @@ function EBookCheckoutForm({ ebook, userId, onSuccess }) {
 
   useEffect(() => {
     if (!ebook?._id) return;
-    axios.post("http://localhost:4001/ebook/payment-intent", { ebookId: ebook._id })
+    axios.post(`${API_URL}/ebook/payment-intent`, { ebookId: ebook._id })
       .then(r => setClientSecret(r.data.clientSecret))
       .catch(() => toast.error("Failed to initialize payment."));
   }, [ebook]);
@@ -52,7 +52,7 @@ function EBookCheckoutForm({ ebook, userId, onSuccess }) {
     });
     if (error) { toast.error("Payment failed: " + error.message); setLoading(false); return; }
     try {
-      await axios.post("http://localhost:4001/ebook/purchase", { userId, ebookId: ebook._id, paymentIntentId: paymentIntent.id });
+      await axios.post(`${API_URL}/ebook/purchase`, { userId, ebookId: ebook._id, paymentIntentId: paymentIntent.id });
       toast.success("eBook purchased! Happy reading 📖");
       onSuccess();
     } catch (err) {
@@ -73,7 +73,7 @@ function EBookCheckoutForm({ ebook, userId, onSuccess }) {
       toast('📱 Simulating UPI approval...', { icon: '⏳', duration: 2000 });
       await new Promise(r => setTimeout(r, 2000));
 
-      await axios.post("http://localhost:4001/ebook/purchase-upi", {
+      await axios.post(`${API_URL}/ebook/purchase-upi`, {
         userId, ebookId: ebook._id, upiId,
       });
       toast.success("eBook purchased via UPI! Happy reading 📖");
@@ -612,14 +612,14 @@ function EBookDetail() {
     setLoading(true);
     try {
       const [ebookRes, allRes] = await Promise.all([
-        axios.get(`http://localhost:4001/ebook/${id}`),
-        axios.get("http://localhost:4001/ebook"),
+        axios.get(`${API_URL}/ebook/${id}`),
+        axios.get(`${API_URL}/ebook`),
       ]);
       setEbook(ebookRes.data);
       setRelatedEbooks(allRes.data.filter(e => e.category === ebookRes.data.category && e._id !== id).slice(0, 4));
 
       if (userId) {
-        const ownRes = await axios.get(`http://localhost:4001/ebook/owns/${userId}/${id}`);
+        const ownRes = await axios.get(`${API_URL}/ebook/owns/${userId}/${id}`);
         setOwned(ownRes.data.owned);
       }
     } catch {

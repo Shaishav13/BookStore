@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import API_URL from "../config/api";
 import { MdDelete, MdSearch } from "react-icons/md";
 import { useAuth } from "../context/AuthProvider";
 import toast from "react-hot-toast";
@@ -13,7 +14,7 @@ export default function AdminUsers() {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get("http://localhost:4001/admin/users", {
+      const res = await axios.get(`${API_URL}/admin/users`, {
         headers: { "x-admin-id": authUser?._id },
       });
       setUsers(res.data.users);
@@ -41,7 +42,7 @@ export default function AdminUsers() {
   const handleDelete = async (userId) => {
     if (!window.confirm("Delete this user? This cannot be undone.")) return;
     try {
-      await axios.delete(`http://localhost:4001/admin/users/${userId}`, {
+      await axios.delete(`${API_URL}/admin/users/${userId}`, {
         headers: { "x-admin-id": authUser?._id },
       });
       toast.success("User deleted");
@@ -54,7 +55,7 @@ export default function AdminUsers() {
   const handleRoleChange = async (userId, newRole) => {
     try {
       await axios.put(
-        `http://localhost:4001/admin/users/${userId}/role`,
+        `${API_URL}/admin/users/${userId}/role`,
         { role: newRole },
         { headers: { "x-admin-id": authUser?._id } }
       );

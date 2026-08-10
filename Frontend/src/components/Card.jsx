@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import API_URL from '../config/api';
 import toast from 'react-hot-toast';
 import { useAuth } from '../context/AuthProvider';
 import { useCartContext } from '../context/CartProvider';
@@ -18,7 +19,7 @@ function Card({ item }) {
   // Check wishlist status on mount
   useEffect(() => {
     if (!userId) return;
-    axios.get(`http://localhost:4001/user/wishlist/${userId}`)
+    axios.get(`${API_URL}/user/wishlist/${userId}`)
       .then(res => {
         const ids = (res.data.wishlist || []).map(b => b._id || b);
         setInWishlist(ids.includes(item._id));
@@ -30,9 +31,9 @@ function Card({ item }) {
     e.stopPropagation();
     const quantity = 1;
     try {
-      await axios.post("http://localhost:4001/cart/create", { userId, bookId: item._id, quantity });
+      await axios.post(`${API_URL}/cart/create`, { userId, bookId: item._id, quantity });
       toast.success("Book added to cart!");
-      const res = await axios.get(`http://localhost:4001/cart/${user._id}`);
+      const res = await axios.get(`${API_URL}/cart/${user._id}`);
       setCartCount(res.data.items.length);
     } catch (err) {
       toast.error("Error: " + (err.response?.data?.message || err.message));
@@ -45,11 +46,11 @@ function Card({ item }) {
     setWishlistLoading(true);
     try {
       if (inWishlist) {
-        await axios.delete(`http://localhost:4001/user/wishlist/${userId}/${item._id}`);
+        await axios.delete(`${API_URL}/user/wishlist/${userId}/${item._id}`);
         setInWishlist(false);
         toast.success("Removed from wishlist");
       } else {
-        await axios.post(`http://localhost:4001/user/wishlist/${userId}`, { bookId: item._id });
+        await axios.post(`${API_URL}/user/wishlist/${userId}`, { bookId: item._id });
         setInWishlist(true);
         toast.success("Added to wishlist ❤️");
       }

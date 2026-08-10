@@ -1,4 +1,5 @@
 import axios from 'axios';
+import API_URL from '../config/api';
 import React, { Children, useContext, useEffect, useState } from 'react'
 import { createContext } from 'react'
 
@@ -10,7 +11,7 @@ function CartProvider({children}) {
     useEffect(()=>{
     const fetchCart = async () => {
             if (user && user.role !== 'admin') {
-              await axios.get(`http://localhost:4001/cart/${user._id}`)
+              await axios.get(`${API_URL}/cart/${user._id}`)
                 .then(res => {
                 setCartCount(res.data.items.length)
                 })

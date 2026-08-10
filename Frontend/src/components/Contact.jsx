@@ -3,6 +3,7 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import API_URL from "../config/api";
 import toast from "react-hot-toast";
 
 function Contact() {
@@ -21,7 +22,7 @@ function Contact() {
     };
 
     try {
-      const res = await axios.post("http://localhost:4001/contact/", contactData);
+      const res = await axios.post(`${API_URL}/contact/`, contactData);
       if (res.data) {
         toast.success("Message sent successfully");
         reset();

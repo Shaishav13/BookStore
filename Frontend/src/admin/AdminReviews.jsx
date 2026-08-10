@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import API_URL from '../config/api';
 import { useAuth } from '../context/AuthProvider';
 import toast from 'react-hot-toast';
 import { MdSearch, MdClose, MdStar, MdStarBorder, MdCheck, MdDelete } from 'react-icons/md';
@@ -36,7 +37,7 @@ export default function AdminReviews() {
 
   const fetchReviews = async () => {
     try {
-      const res = await axios.get('http://localhost:4001/admin/reviews', { headers });
+      const res = await axios.get(`${API_URL}/admin/reviews`, { headers });
       setReviews(res.data.reviews);
       setFiltered(res.data.reviews);
     } catch {
@@ -63,7 +64,7 @@ export default function AdminReviews() {
 
   const handleApprove = async (reviewId) => {
     try {
-      await axios.patch(`http://localhost:4001/admin/reviews/${reviewId}/approve`, {}, { headers });
+      await axios.patch(`${API_URL}/admin/reviews/${reviewId}/approve`, {}, { headers });
       setReviews(prev => prev.map(r => r._id === reviewId ? { ...r, approved: true } : r));
       toast.success('Review approved');
     } catch {
@@ -74,7 +75,7 @@ export default function AdminReviews() {
   const handleDelete = async (reviewId) => {
     if (!window.confirm('Delete this review?')) return;
     try {
-      await axios.delete(`http://localhost:4001/admin/reviews/${reviewId}`, { headers });
+      await axios.delete(`${API_URL}/admin/reviews/${reviewId}`, { headers });
       setReviews(prev => prev.filter(r => r._id !== reviewId));
       toast.success('Review deleted');
     } catch {
